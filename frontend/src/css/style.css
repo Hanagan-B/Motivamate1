@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f8f8ff;
+}
+
+.task-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 70%;
+}
+
+button {
+  padding: 8px 12px;
+  margin-left: 5px;
+}
+
+li {
+  margin-top: 10px;
+  list-style: none;
+}
