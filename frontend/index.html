@@ -1,107 +1,118 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-br">
 <head>
-  <title>MotivaMate</title>
+  <meta charset="utf-8" />
+  <title>MotivaMate - Teste Conexão</title>
+</head>
+<body>
+  <h1>MotivaMate</h1>
+  <p id="xpDisplay">XP: --</p>
+
+  <input type="text" id="taskInput" placeholder="Digite a tarefa..." />
+  <button id="btnAdd" type="button">Add Task</button>
+
+  <ul id="taskList"></ul>
+</body>
+
   <script>
-    const API_BASE = "http://localhost:8080"; // Base URL of your Spring Boot backend
+  const API_BASE = "http://localhost:8080";
+  const USER_ID = 1; // se seu usuário tiver outro id, troque aqui
 
   async function addTask() {
-    const title = document.getElementById("taskInput").value;
-    const userId = 1; // Default user
+    const input = document.getElementById("taskInput");
+    const title = input.value.trim();
+    if (!title) return;
 
     try {
-      await fetch(`${API_BASE}/api/tasks/add`, {
+      const res = await fetch(`${API_BASE}/api/tasks/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, userId })
+        body: JSON.stringify({ title, userId: USER_ID })
       });
-
-      loadTasks();
-    } catch (error) {
-      console.error("Add task failed:", error);
+      if (!res.ok) {
+        const txt = await res.text();
+        console.error("Falha ao adicionar:", res.status, txt);
+        alert("Erro ao adicionar: " + res.status);
+        return;
+      }
+      await loadTasks(); // recarrega lista
+      input.value = "";
+    } catch (e) {
+      console.error("Erro de rede:", e);
+      alert("Não conectou ao backend.");
     }
   }
 
   async function completeTask(id) {
     try {
-      await fetch(`${API_BASE}/api/tasks/complete/${id}`, { method: "POST" });
-      loadXP();
-      loadTasks();
-      showBotReaction();
-    } catch (error) {
-      console.error("Complete task failed:", error);
+      const res = await fetch(`${API_BASE}/api/tasks/complete/${id}`, { method: "POST" });
+      if (!res.ok) {
+        const txt = await res.text();
+        console.warn("Falha ao completar:", res.status, txt);
+      }
+      await loadXP();
+      await loadTasks();
+    } catch (e) {
+      console.error("Erro de rede:", e);
     }
   }
 
   async function loadTasks() {
-    console.log("loadTasks called");
     try {
-      const res = await fetch(`${API_BASE}/api/tasks/user/1`);
+      const res = await fetch(`${API_BASE}/api/tasks/user/${USER_ID}`);
       if (!res.ok) {
-        const errText = await res.text();
-        console.error("Task fetch failed:", res.status, errText);
+        const txt = await res.text();
+        console.error("Falha ao buscar tasks:", res.status, txt);
         return;
       }
-
       const tasks = await res.json();
-      console.log("Tasks received:", tasks);
-
       const list = document.getElementById("taskList");
       list.innerHTML = "";
 
-      tasks.forEach(task => {
+      if (!tasks || tasks.length === 0) {
         const li = document.createElement("li");
-        li.textContent = task.text + (task.completed ? " ✅" : ""); // Use 'text' instead of 'title'
-        if (!task.completed) {
+        li.textContent = "Sem tasks. Adicione uma acima.";
+        list.appendChild(li);
+        return;
+      }
+
+      tasks.forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = `${t.text} ${t.completed ? "✅" : ""}`;
+        if (!t.completed) {
           const btn = document.createElement("button");
-          btn.textContent = "Complete";
-          btn.onclick = () => completeTask(task.id);
+          btn.textContent = "Completar";
+          btn.onclick = () => completeTask(t.id);
+          li.appendChild(document.createTextNode(" "));
           li.appendChild(btn);
         }
         list.appendChild(li);
       });
-    } catch (error) {
-      console.error("loadTasks failed:", error);
+    } catch (e) {
+      console.error("Erro de rede em loadTasks:", e);
     }
   }
 
   async function loadXP() {
     try {
-      const res = await fetch(`${API_BASE}/api/users/1`);
+      const res = await fetch(`${API_BASE}/api/users/${USER_ID}`);
       if (!res.ok) {
-        const errText = await res.text();
-        console.error("XP fetch failed:", res.status, errText);
+        document.getElementById("xpDisplay").textContent = "XP: (erro)";
         return;
       }
-
       const user = await res.json();
-      document.getElementById("xpDisplay").textContent = "XP: " + user.xp;
-    } catch (error) {
-      console.error("loadXP failed:", error);
+      document.getElementById("xpDisplay").textContent = `XP: ${user.xp ?? 0}`;
+    } catch (e) {
+      console.error("Erro de rede em loadXP:", e);
+      document.getElementById("xpDisplay").textContent = "XP: (sem conexão)";
     }
   }
 
-  function showBotReaction() {
-    const bot = document.getElementById("pixelBot");
-    bot.src = "happy-bot.gif"; // Ensure this file is in the same folder or adjust the path
-    setTimeout(() => bot.src = "idle-bot.gif", 3000);
-  }
-
   window.onload = () => {
-    loadTasks();
     loadXP();
+    loadTasks();
+    document.getElementById("btnAdd").onclick = addTask;
   };
-  </script>
-</head>
-
-<body>
-  <h1>MotivaMate</h1>
-  <p id="xpDisplay">XP: 0</p>
-  <input type="text" id="taskInput" placeholder="Enter task..." />
-  <button onclick="addTask()">Add Task</button>
-  <ul id="taskList"></ul>
-  <img id="pixelBot" src="./src/images/idle-bot.gif" width="100" />
+</script>
 </body>
-
 </html>
