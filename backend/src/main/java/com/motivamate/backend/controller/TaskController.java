@@ -1,22 +1,17 @@
 package com.motivamate.backend.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.motivamate.backend.model.Task;
 import com.motivamate.backend.model.User;
 import com.motivamate.backend.repository.TaskRepository;
 import com.motivamate.backend.repository.UserRepository;
 
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -26,43 +21,52 @@ public class TaskController {
     @Autowired
     private UserRepository userRepo;
 
+    @PostMapping("/add")
     public ResponseEntity<Task> addTask(@RequestBody TaskRequest request) {
-        // Find user by ID
-        User user = userRepo.findById((long) request.getUserId()).orElse(null);
+
+        Long userId = request.getUserId();
+        User user = userRepo.findById(userId).orElse(null);
         if (user == null) {
-            return ResponseEntity.badRequest().build(); // user doesn't exist
+            return ResponseEntity.badRequest().build();
         }
 
-        // Create task
-        Task task = new Task(user);
+        Task task = new Task();
         task.setText(request.getTitle());
-        task.setUser(user);
         task.setCompleted(false);
+        task.setUser(user);
 
-        taskRepo.save(task);
-        return ResponseEntity.ok(task);
+        Task saved = taskRepo.save(task);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Task> getTasksByUser(@PathVariable int userId) {
-        return (List<Task>) taskRepo.findById(userId);
+    public ResponseEntity<List<Task>> getTasksByUser(@PathVariable Long userId) {
+
+        List<Task> tasks = taskRepo.findByUser_Id(userId);
+        return ResponseEntity.ok(tasks);
     }
 
     @PostMapping("/complete/{taskId}")
-    public ResponseEntity<String> completeTask(@PathVariable int taskId) {
-        Task task = ((Optional<Task>) taskRepo.findById(taskId)).orElse(null);
-        if (task != null && !task.isCompleted()) {
-            task.setCompleted(true);
-            taskRepo.save(task);
-
-            User user = userRepo.findById(task.getId()).orElse(null);
-            if (user != null) {
-                user.setXp(user.getXp() + 10); // +10 XP per task
-                userRepo.save(user);
-            }
-
-            return ResponseEntity.ok("Task completed. XP added.");
+    public ResponseEntity<String> completeTask(@PathVariable Long taskId) {
+        Task task = taskRepo.findById(taskId).orElse(null);
+        if (task == null) {
+            return ResponseEntity.badRequest().body("Task not found.");
         }
-        return ResponseEntity.badRequest().body("Task not found or already completed.");
+        if (task.isCompleted()) {
+            return ResponseEntity.badRequest().body("Task already completed.");
+        }
+
+        // mark completed
+        task.setCompleted(true);
+        taskRepo.save(task);
+
+        //add XP
+        User user = task.getUser();
+        if (user != null) {
+            user.setXp(user.getXp() + 10);
+            userRepo.save(user);
+        }
+
+        return ResponseEntity.ok("Task completed. XP added.");
     }
 }

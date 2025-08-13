@@ -1,6 +1,9 @@
 package com.motivamate.backend.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -8,34 +11,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users") 
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
     private int xp;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    //avoiding recursion
+    @JsonIgnore 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private BotCompanion bot;
-
-    public int getXp() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getXp'");
+    //constructors
+    public User() {
     }
 
-    public void setXp(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setXp'");
+    public User(String name) {
+        this.name = name;
+        this.xp = 0;
     }
 
+    //getters and setters
     public Long getId() {
         return id;
     }
@@ -52,6 +56,14 @@ public class User {
         this.name = name;
     }
 
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
@@ -60,14 +72,14 @@ public class User {
         this.tasks = tasks;
     }
 
-    public BotCompanion getBot() {
-        return bot;
-    }
-
-    public void setBot(BotCompanion bot) {
-        this.bot = bot;
-    }
-
-    // Getters and Setters
     
+    public void addTask(Task t) {
+        tasks.add(t);
+        t.setUser(this);
+    }
+
+    public void removeTask(Task t) {
+        tasks.remove(t);
+        t.setUser(null);
+    }
 }

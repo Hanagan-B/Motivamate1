@@ -4,83 +4,94 @@
 <head>
   <title>MotivaMate</title>
   <script>
-    async function addTask() {
-      const title = document.getElementById("taskInput").value;
-      const userId = 1; // default user
+    const API_BASE = "http://localhost:8080"; // Base URL of your Spring Boot backend
 
-      await fetch("/api/tasks/add", {
+  async function addTask() {
+    const title = document.getElementById("taskInput").value;
+    const userId = 1; // Default user
+
+    try {
+      await fetch(`${API_BASE}/api/tasks/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, userId })
       });
 
       loadTasks();
+    } catch (error) {
+      console.error("Add task failed:", error);
     }
+  }
 
-    async function completeTask(id) {
-      await fetch(`/api/tasks/complete/${id}`, { method: "POST" });
+  async function completeTask(id) {
+    try {
+      await fetch(`${API_BASE}/api/tasks/complete/${id}`, { method: "POST" });
       loadXP();
       loadTasks();
       showBotReaction();
+    } catch (error) {
+      console.error("Complete task failed:", error);
     }
+  }
 
-    async function loadTasks() {
-      try {
-        const res = await fetch("/api/tasks/user/1");
-
-        if (!res.ok) {
-          const text = await res.text(); // will show the HTML error page
-          console.error("Task fetch failed:", res.status, text);
-          return;
-        }
-
-        const tasks = await res.json();
-
-        const list = document.getElementById("taskList");
-        list.innerHTML = "";
-        tasks.forEach(task => {
-          const li = document.createElement("li");
-          li.textContent = task.text + (task.completed ? " ✅" : "");
-          if (!task.completed) {
-            const btn = document.createElement("button");
-            btn.textContent = "Complete";
-            btn.onclick = () => completeTask(task.id);
-            li.appendChild(btn);
-          }
-          list.appendChild(li);
-        });
-      } catch (err) {
-        console.error("Unexpected error while loading tasks:", err);
+  async function loadTasks() {
+    console.log("loadTasks called");
+    try {
+      const res = await fetch(`${API_BASE}/api/tasks/user/1`);
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Task fetch failed:", res.status, errText);
+        return;
       }
-    }
 
-    async function loadXP() {
-      try {
-        const res = await fetch("/api/users/1");
+      const tasks = await res.json();
+      console.log("Tasks received:", tasks);
 
-        if (!res.ok) {
-          const text = await res.text(); // will help debug the HTML error
-          console.error("XP fetch failed:", res.status, text);
-          return;
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.text + (task.completed ? " ✅" : ""); // Use 'text' instead of 'title'
+        if (!task.completed) {
+          const btn = document.createElement("button");
+          btn.textContent = "Complete";
+          btn.onclick = () => completeTask(task.id);
+          li.appendChild(btn);
         }
+        list.appendChild(li);
+      });
+    } catch (error) {
+      console.error("loadTasks failed:", error);
+    }
+  }
 
-        const user = await res.json();
-        document.getElementById("xpDisplay").textContent = "XP: " + user.xp;
-      } catch (err) {
-        console.error("Unexpected error while loading XP:", err);
+  async function loadXP() {
+    try {
+      const res = await fetch(`${API_BASE}/api/users/1`);
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("XP fetch failed:", res.status, errText);
+        return;
       }
-    }
 
-    function showBotReaction() {
-      const bot = document.getElementById("pixelBot");
-      bot.src = "happy-bot.gif"; // your animated bot image
-      setTimeout(() => bot.src = "idle-bot.gif", 3000);
+      const user = await res.json();
+      document.getElementById("xpDisplay").textContent = "XP: " + user.xp;
+    } catch (error) {
+      console.error("loadXP failed:", error);
     }
+  }
 
-    window.onload = () => {
-      loadTasks();
-      loadXP();
-    };
+  function showBotReaction() {
+    const bot = document.getElementById("pixelBot");
+    bot.src = "happy-bot.gif"; // Ensure this file is in the same folder or adjust the path
+    setTimeout(() => bot.src = "idle-bot.gif", 3000);
+  }
+
+  window.onload = () => {
+    loadTasks();
+    loadXP();
+  };
   </script>
 </head>
 
@@ -90,7 +101,7 @@
   <input type="text" id="taskInput" placeholder="Enter task..." />
   <button onclick="addTask()">Add Task</button>
   <ul id="taskList"></ul>
-  <img id="pixelBot" src="idle-bot.gif" width="100" />
+  <img id="pixelBot" src="./src/images/idle-bot.gif" width="100" />
 </body>
 
 </html>
