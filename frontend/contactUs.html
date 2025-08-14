@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,#
+    initial-scale=1.0">
+    <title>Contact Us</title>
+    
+    
+    <link 
+        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./src/css/reset.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="./src/css/responsivo.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+
+</head>
+
+<body>
+   <div class="top">
+        <ul class="navbar">
+            <li class="litop"><a href="index.html" class="topping">Home</a></li>
+            <li class="litop"><a href="./dashboard.html" class="topping">Sign in</a></li>
+            <li class="litop"><a href="./contactUs.html" class="topping">Contact us</a></li>
+               
+            </li>
+           
+        </ul>
+    </div>
+
+  
+    <div class="textcenter">
+        <h4>We know that starting an adventure can be hard somentimes. That is why we are here to help you understant the world of Teyvat. Let us know if you have any question or sugestion, by submiting the form below.</h4> 
+       </div>
+
+    <main>
+       
+        <div class="container">
+            <form>
+                <i class="fa-solid fa-envelope-open"></i>
+
+            <div class="option">
+               
+                <select name="s1" id="message-option">
+                    <option value="enquire">Enquire</option>
+                    <option value="message">Message</option>
+                    <option value="doubt">Doubts</option>
+                </select>
+
+            </div>
+        
+              <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your name" id="sub-name" onkeyup="validateName()">
+                <span id="name-error"></span>
+              </div>
+        
+              <div class="input-group">
+                <label>Phone No.</label>
+                <input type="tel" placeholder="123 456 7890" id="sub-phone" onkeyup="validatePhone()">
+                <span id="phone-error"></span>
+              </div>
+        
+              <div class="input-group">
+                <label>Email Id</label>
+                <input type="email" placeholder="Enter Email" id="sub-email" onkeyup="validateEmail()">
+                <span id="email-error"></span>
+              </div>   
+        
+              <div class="input-group">
+                <label>Your Message</label>
+                <textarea rows="5" placeholder="Enter your message" id="sub-message" onkeyup="validateMessage()"></textarea>
+                <span id="message-error"></span>
+              </div>
+        
+            <button onclick="return validateForm()">Submit</button>
+            <span id="submit-error"></span>
+           
+          </form>
+        </div>
+
+    </main>
+
+    <footer>
+        <div id="footer_content">
+            <div id="footer_contents">
+                <a href="./index.html"><img src="./src/imagens/logo.png" alt="logo"></a>
+
+                <div id="footer_social_media">
+                    <a href="https://www.instagram.com/genshinimpact/" class= "footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+
+                    </a>
+
+                    <a href="https://x.com/genshinimpact" class= "footer-link" id="twitterx">
+                        <i class="fa-brands fa-x-twitter"></i>
+    
+                    </a>
+
+                    <a href="https://www.youtube.com/@GenshinImpact" class= "footer-link" id="youtube">
+                        <i class="fa-brands fa-youtube"></i>
+    
+                    </a>
+
+
+                    
+                </div>
+            </div>
+
+            <ul class="footer_list">
+                <li>
+                    <h3 class="textlist">Oficial Genshin</h3>
+                </li>
+                <li>
+                    <a href="https://www.hoyolab.com/home?utm_source=tool&utm_medium=logo&utm_campaign=checkin&utm_id=2" class="footer-link">Hoyolab</a>
+                </li>
+                <li>
+                    <a href="https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&hyl_auth_required=true&hyl_presentation_style=fullscreen&utm_source=hoyolab&utm_medium=tools&lang=en-us&bbs_theme=dark&bbs_theme_device=1" class="footer-link">Daily Checkin</a>
+                </li>
+                <li>
+                    <a href="https://genshin-impact-map.appsample.com/#/" class="footer-link">Interactive Map</a>
+                </li>
+
+            </ul>
+
+            <ul class="footer_list">
+                <li>
+                    <h3 class="textlist">Hoyoverse</h3>
+                </li>
+                <li>
+                    <a href="https://honkaiimpact3.hoyoverse.com/global/en-us/fab" class="footer-link">Honkai Impact 3rd</a>
+                </li>
+                <li>
+                    <a href="https://zenless.hoyoverse.com/ua?&utm_source=ua&utm_medium=google&utm_campaign=ZZZ-EU-PC-1-new-search-brand-20240704-Pixel_Exact_Match&hoyotrace_channel=ga_channel&gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595j4xDryTG3C-jAJFcO9-X-mw2B3enHRwwioM3G9h0sYSUZOOutVaCEaAlMkEALw_wcB" class="footer-link">Zenless Zone Zero</a>
+                </li>
+                <li>
+                    <a href="https://hsr.hoyoverse.com/ua2?utm_source=EU_google_EU_search_UA2_brand&hoyotrace_channel=ga_channel&gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595gbkAWluO5CkqGPqe5uUaV1IN3pkYMjJ0sqyF0lU5y9dFxhmEUTWVEaAtZMEALw_wcB" class="footer-link">Honkai StarRail</a>
+                </li>
+
+            </ul>
+
+            <div id="footer_subscribe">
+                <h3 class="textlist">Subscribe</h3>
+                <p class="textlist">
+                    Enter your email to get news about Genshin
+                </p>
+
+                <div id="input_group">
+                    <input type="email" id="email">
+                    <span id="email-error"></span>
+                    <button>
+                        <i class="fa-solid fa-envelope" onclick="alert('Thank you for your subscription')"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+         </div>
+
+         <div id="footer_copyright">
+            &#169
+            COGNOSPHERE. All Rights Reserved.
+        </div>
+    </footer>
+
+   
+
+  <script src="./src/js/contactUs.js"></script>
+</body>
+
+</html>

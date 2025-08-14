@@ -1,25 +1,37 @@
-function addTask() {
-  const taskInput = document.getElementById("taskInput");
-  const taskText = taskInput.value.trim();
-  if (taskText === "") return;
+const listSelectionArchons = document.querySelectorAll(".archon");
 
-  const task = { text: taskText, completed: false };
+listSelectionArchons.forEach(archon=> {
+    archon.addEventListener("click", ()=>{
+        hideCardArchon();
+    
+const idArchonSelected = showCardArchonSelected(archon);
 
-  fetch("http://localhost:8080/api/tasks", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(task)
-  })
-    .then(res => res.json())
-    .then(savedTask => {
-      renderTask(savedTask); // Show the new task in UI
-      taskInput.value = "";
+desactivateArchonOnList();
+activateArchonSelectedOnList(idArchonSelected);
+ 
     })
-    .catch(err => console.error("Error saving task:", err));
+})
+
+function activateArchonSelectedOnList(idArchonSelected){
+    const archonSelectedOnList = document.getElementById(idArchonSelected);
+    archonSelectedOnList.classList.add("active");
+
 }
-window.onload = function () {
-  fetch("http://localhost:8080/api/tasks")
-    .then(res => res.json())
-    .then(tasks => tasks.forEach(renderTask))
-    .catch(err => console.error("Error loading tasks:", err));
-};
+
+function desactivateArchonOnList(){
+    const archonActiveOnList = document.querySelector(".active");
+    archonActiveOnList.classList.remove("active");
+}
+
+function showCardArchonSelected(archon){
+    const idArchonSelected = archon.attributes.id.value;
+    const idCardArchonToOpen = "card-" +idArchonSelected;
+    const cardArchonToOpen = document.getElementById(idCardArchonToOpen);
+    cardArchonToOpen.classList.add("open");
+    return idArchonSelected;
+}
+
+function hideCardArchon(){
+    const cardArchonOpen = document.querySelector(".open");
+    cardArchonOpen.classList.remove("open");
+}

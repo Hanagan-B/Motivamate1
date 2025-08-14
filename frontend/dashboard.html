@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MotivaMate — Dashboard</title>
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="./src/css/reset.css" />
+  <link rel="stylesheet" href="./src/css/dashboard.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="./src/imagens/logo.png" alt="MotivaMate" />
+        <span>MotivaMate</span>
+      </div>
+
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="#" id="logoutLink">Sair</a>
+      </nav>
+    </aside>
+
+    <!-- Área principal -->
+    <div class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <h1>Dashboard</h1>
+        <div class="xp-pill" id="xpDisplay">XP: --</div>
+      </header>
+
+      <!-- Conteúdo -->
+      <section class="content">
+        <div class="cards">
+          <!-- Card de tarefas -->
+          <article class="card" id="task-card">
+            <header class="card-header">
+              <h2>Minhas tarefas</h2>
+              <div class="task-form">
+                <input id="taskInput" type="text" placeholder="Digite uma tarefa…" />
+                <button id="btnAdd" class="btn primary">Adicionar</button>
+              </div>
+            </header>
+
+            <div class="card-body">
+              <ul id="taskList" class="task-list"></ul>
+              <div id="taskEmpty" class="empty" hidden>
+                Nenhuma tarefa ainda. Que tal criar a primeira? ✨
+              </div>
+              <div id="taskLoading" class="loading" hidden>
+                Carregando tarefas…
+              </div>
+            </div>
+          </article>
+
+          <!-- (Opcional) Card de métricas simples -->
+          <article class="card">
+            <header class="card-header">
+              <h2>Resumo</h2>
+            </header>
+            <div class="card-body" id="summary">
+              <div class="stat">
+                <div class="stat-value" id="statTotal">--</div>
+                <div class="stat-label">Total de tarefas</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="statDone">--</div>
+                <div class="stat-label">Concluídas</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value" id="statOpen">--</div>
+                <div class="stat-label">Pendentes</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <small>© MotivaMate — foco e progresso diário</small>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./src/js/dashboard.js"></script>
+</body>
+</html>

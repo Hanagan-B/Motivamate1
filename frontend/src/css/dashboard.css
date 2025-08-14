@@ -1,0 +1,109 @@
+:root {
+  --bg: #0b1220;
+  --panel: #121a2b;
+  --panel-2: #0f1726;
+  --text: #e7ecf4;
+  --muted: #a5b0c4;
+  --border: #24314a;
+  --primary: #0ea5e9;
+  --primary-2: #0284c7;
+  --success: #22c55e;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(1200px 700px at 10% -10%, #0f1a2f 0%, #0b1220 40%, #070c16 100%);
+}
+
+/* Layout base */
+.layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  padding: 20px 16px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand img { width: 36px; height: 36px; border-radius: 8px; }
+.brand span { font-weight: 700; font-size: 18px; letter-spacing: .3px; }
+
+.menu { display: grid; gap: 10px; }
+.menu a {
+  text-decoration: none; color: var(--text);
+  padding: 10px 12px; border: 1px solid transparent; border-radius: 10px;
+}
+.menu a:hover { background: #0f1b31; border-color: var(--border); }
+.menu a.active { background: #102243; border-color: #1a2c52; color: #eaf6ff; }
+
+.main { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 24px; border-bottom: 1px solid var(--border); background: rgba(16,24,40,.3);
+  backdrop-filter: blur(6px);
+}
+.topbar h1 { margin: 0; font-size: 20px; font-weight: 600; }
+.xp-pill {
+  background: #0b1f38; border: 1px solid #1a355c; color: #cde9ff;
+  padding: 6px 12px; border-radius: 999px; font-weight: 600;
+}
+
+.content { padding: 20px; }
+.cards { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } .cards { grid-template-columns: 1fr; } .sidebar { position: sticky; top: 0; } }
+
+.card {
+  background: linear-gradient(180deg, #0f1627 0%, #0d1422 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+}
+.card-header {
+  display: grid; gap: 12px;
+  padding: 16px; border-bottom: 1px solid var(--border);
+}
+.card-header h2 { margin:0; font-size: 18px; font-weight: 600; }
+.card-body { padding: 16px; }
+
+/* Form */
+.task-form { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+.task-form input {
+  width: 100%; padding: 12px 14px; border-radius: 10px;
+  border: 1px solid #1b2943; background: #0b1530; color: var(--text);
+}
+.btn {
+  padding: 11px 16px; border-radius: 10px; border: 1px solid transparent;
+  cursor: pointer; font-weight: 600;
+}
+.btn.primary { background: var(--primary); color: white; border-color: var(--primary-2); }
+.btn.primary:hover { filter: brightness(1.05); }
+
+/* Lista de tarefas */
+.task-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.task-item {
+  display:flex; align-items:center; justify-content:space-between; gap: 12px;
+  border:1px solid #1b2943; background:#0b1530; border-radius: 12px; padding: 12px 14px;
+}
+.task-title { display:flex; align-items:center; gap: 10px; }
+.task-title.completed { text-decoration: line-through; opacity: .7; }
+.actions { display:flex; gap: 8px; }
+.btn.ghost { background: transparent; border-color: #1b2943; color: var(--text); }
+.btn.ghost:hover { background: #0e1d3c; }
+
+.empty, .loading {
+  text-align:center; color: var(--muted);
+  border: 1px dashed #24314a; padding: 18px; border-radius: 12px;
+}
+
+/* Resumo */
+#summary { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.stat { background:#0b1530; border:1px solid #1b2943; border-radius:12px; padding:16px; text-align:center; }
+.stat-value { font-size: 24px; font-weight: 700; }
+.stat-label { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+.footer { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--muted); }
