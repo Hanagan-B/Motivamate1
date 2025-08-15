@@ -5,15 +5,15 @@
 
   const $ = (sel) => document.querySelector(sel);
   const els = {
-    xp:      () => $("#xpDisplay"),
-    input:   () => $("#taskInput"),
-    add:     () => $("#btnAdd"),
-    list:    () => $("#taskList"),
-    empty:   () => $("#taskEmpty"),
+    xp: () => $("#xpDisplay"),
+    input: () => $("#taskInput"),
+    add: () => $("#btnAdd"),
+    list: () => $("#taskList"),
+    empty: () => $("#taskEmpty"),
     loading: () => $("#taskLoading"),
     statTotal: () => $("#statTotal"),
-    statDone:  () => $("#statDone"),
-    statOpen:  () => $("#statOpen"),
+    statDone: () => $("#statDone"),
+    statOpen: () => $("#statOpen"),
   };
 
   // HTTP helpers
@@ -24,11 +24,14 @@
       return r.json();
     },
     async post(url, body) {
-      const r = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: body ? JSON.stringify(body) : null
-      });
+      const opts = {
+        method: "POST"
+      };
+      if (body !== undefined) {
+        opts.headers = { "Content-Type": "application/json" };
+        opts.body = JSON.stringify(body);
+      }
+      const r = await fetch(url, opts);
       if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
       return r.headers.get("content-length") === "0" ? null : r.json();
     },
@@ -40,16 +43,18 @@
 
   // API
   const api = {
-    user:     () => http.get(`${API_BASE}/api/users/${USER_ID}`),
-    tasks:    () => http.get(`${API_BASE}/api/tasks/user/${USER_ID}`),
-    addTask:  (title) => http.post(`${API_BASE}/api/tasks/add`, { title, userId: USER_ID }),
+    user: () => http.get(`${API_BASE}/api/users/${USER_ID}`),
+    tasks: () => http.get(`${API_BASE}/api/tasks/user/${USER_ID}`),
+    addTask: (title) => http.post(`${API_BASE}/api/tasks/add`, { title, userId: USER_ID }),
     complete: (id) => http.post(`${API_BASE}/api/tasks/complete/${id}`),
-    remove:   (id) => http.del(`${API_BASE}/api/tasks/${id}`),
+    remove: (id) => http.del(`${API_BASE}/api/tasks/${id}`),
   };
 
   // Render
   function renderXP(user) {
-    els.xp().textContent = `XP: ${user?.xp ?? 0}`;
+   const xpEl = els.xp();
+  if (!xpEl) return; // evita quebrar renderização de tarefas
+  xpEl.textContent = `XP: ${user?.xp ?? 0}`;
   }
 
   function renderSummary(tasks) {
@@ -57,8 +62,8 @@
     const done = tasks.filter(t => t.completed).length;
     const open = total - done;
     if (els.statTotal()) els.statTotal().textContent = total;
-    if (els.statDone()) els.statDone().textContent  = done;
-    if (els.statOpen()) els.statOpen().textContent  = open;
+    if (els.statDone()) els.statDone().textContent = done;
+    if (els.statOpen()) els.statOpen().textContent = open;
   }
 
   function renderTasks(tasks) {
@@ -79,14 +84,14 @@
 
       const title = document.createElement("span");
       title.className = "task-title" + (t.completed ? " completed" : "");
-      title.textContent = t.text;
+      title.textContent = t.title ?? t.text ?? `(sem título #${t.id ?? ''})`;
 
       const actions = document.createElement("div");
       actions.className = "actions";
 
       if (!t.completed) {
         const bDone = document.createElement("button");
-        bDone.className = "btn";
+        bDone.className = "btn complete";
         bDone.textContent = "Completar";
         bDone.addEventListener("click", async () => {
           await api.complete(t.id);
@@ -110,7 +115,7 @@
     }
   }
 
-  // Ações
+  // Actions
   async function onAdd() {
     const input = els.input();
     const title = input.value.trim();
@@ -146,7 +151,7 @@
 
   // Init
   function init() {
-    // eventos
+    // events
     els.add().addEventListener("click", onAdd);
     els.input().addEventListener("keydown", (e) => {
       if (e.key === "Enter") onAdd();
@@ -165,4 +170,83 @@
   }
 
   document.addEventListener("DOMContentLoaded", init);
+})();
+
+
+(() => {
+  // --- Pet reactions ---
+  const SELECTORS = {
+    petCard: '#pet-card',
+    petImages: '#petImages',
+    btnAdd: '#btnAdd',
+    taskList: '#taskList',
+  };
+
+  
+  const PET_IMAGES = [
+    './src/images/Fox pink-Photoroom.png',
+    './src/images/Fox pink-Photoroom-blink.gif',
+    './src/images/Fox pink-Photoroom-blinking-smilling.gif',
+    './src/images/Fox pink-Photoroom-smiling.gif',
+  ];
+
+  // --- State ---
+  let petIndex = 0;
+
+  // --- Utils ---
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const petCard = $(SELECTORS.petCard);
+  const petContainer = $(SELECTORS.petImages);
+
+  function setPetImage(src) {
+    if (!petContainer) return;
+    petContainer.innerHTML = `<img src="${src}" alt="pet">`;
+  }
+
+  function nextPetImage() {
+    if (!PET_IMAGES.length) return;
+    petIndex = (petIndex + 1) % PET_IMAGES.length;
+    setPetImage(PET_IMAGES[petIndex]);
+  }
+
+  function triggerPetState(stateClass, duration = 800) {
+    if (!petCard) return;
+    petCard.classList.add(stateClass);
+    setTimeout(() => petCard.classList.remove(stateClass), duration);
+  }
+
+  // Exponha funções públicas para integrar com o resto do app
+  window.onTaskAddedPetReact = function onTaskAddedPetReact() {
+    nextPetImage();
+    triggerPetState('happy');
+  };
+
+  window.onTaskCompletedPetReact = function onTaskCompletedPetReact() {
+    nextPetImage();
+    triggerPetState('celebrate');
+  };
+
+ 
+  const btnAdd = $(SELECTORS.btnAdd);
+  if (btnAdd) {
+    btnAdd.addEventListener('click', () => {
+      
+      window.onTaskAddedPetReact();
+    });
+  }
+
+  const taskList = $(SELECTORS.taskList);
+  if (taskList) {
+    taskList.addEventListener('click', (e) => {
+     
+      if (e.target.matches('.complete, .complete *') || e.target.closest('.complete')) {
+        window.onTaskCompletedPetReact();
+      }
+    });
+  }
+
+  
+  if (PET_IMAGES.length && petContainer && !petContainer.querySelector('img')) {
+    setPetImage(PET_IMAGES[0]);
+  }
 })();
