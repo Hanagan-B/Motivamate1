@@ -17,9 +17,10 @@
   <link rel="stylesheet" href="./src/css/reset.css" />
   <link rel="stylesheet" href="./src/css/dashboard.css" />
   <link rel="stylesheet" href="./src/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <!-- HEADER original mantido -->
+  
   <div class="top">
         <ul class="navbar">
             <li class="litop"><a href="index.html" class="topping">Home</a></li>
@@ -31,68 +32,64 @@
         </ul>
     </div>
 
-    <header class="card-header">
-            
-           <h2>Resumo</h2>
-           <div id="xpDisplay" class="xp">XP: 0</div>
-           </header>
+
 
 <main>
   
-      <!-- Conteúdo (mantendo textos originais) -->
+      
       <section class="content">
         <div class="cards">
-          <!-- Card de tarefas -->
+          
           <article class="card" id="task-card">
             <header class="card-header">
-              <h2>Minhas tarefas</h2>
+              <h2>My tasks</h2>
               <div class="task-form">
-                <input id="taskInput" type="text" placeholder="Digite uma tarefa…" />
-                <button id="btnAdd" class="btn primary">Adicionar</button>
+                <input id="taskInput" type="text" placeholder="New task..." />
+                <button id="btnAdd" class="btn primary">Add</button>
               </div>
             </header>
 
             <div class="card-body">
               <ul id="taskList" class="task-list"></ul>
               <div id="taskEmpty" class="empty" hidden>
-                Nenhuma tarefa ainda. Que tal criar a primeira? ✨
+                No tasks yet. Add your first task!
               </div>
               <div id="taskLoading" class="loading" hidden>
-                Carregando tarefas…
+                Loading tasks…
               </div>
             </div>
           </article>
 
-          <!-- Card para imagens do pet -->
+          
           <article class="card" id="pet-card">
             <header class="card-header">
-              <h2>Meu Pet</h2>
+              <h2>My Pet</h2>
             </header>
             <div class="card-body pet-gallery">
-              <!-- Espaço para inserir imagens do pet -->
+              
               <div class="pet-images" id="petImages">
                 <img src="./src/images/Fox pink-Photoroom.png" alt="fox pet">
               </div>
             </div>
           </article>
 
-          <!-- Card de métricas -->
+          
           <article class="card">
             <header class="card-header">
-              <h2>Resumo</h2>
+              <h2>Summary</h2>
             </header>
             <div class="card-body" id="summary">
               <div class="stat">
                 <div class="stat-value" id="statTotal">--</div>
-                <div class="stat-label">Total de tarefas</div>
+                <div class="stat-label">Total tasks</div>
               </div>
               <div class="stat">
                 <div class="stat-value" id="statDone">--</div>
-                <div class="stat-label">Concluídas</div>
+                <div class="stat-label">Finished</div>
               </div>
               <div class="stat">
                 <div class="stat-value" id="statOpen">--</div>
-                <div class="stat-label">Pendentes</div>
+                <div class="stat-label">To do</div>
               </div>
             </div>
           </article>
@@ -101,7 +98,7 @@
       </section>
 </main>
       
-      <!-- FOOTER original mantido -->
+      
       <footer>
 
         <div id="footer_content">

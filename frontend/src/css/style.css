@@ -125,22 +125,18 @@ style to main cards on index page
 .card-archon .card-topo {
 
     padding: 30px 40px 0;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
 }
 
 .card-archon .name {
     margin-bottom: 5px;
 }
 
-.card-archon .tipo {
-    background-color: #ffffff;
-    font-size: 12px;
-    opacity: 0.7;
-    border-radius: 10px;
-    padding: 2px 10px;
-}
+
 
 .card-archon .detalhes {
-    color: #ffffff;
+    color: #feabc5;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -174,27 +170,7 @@ style to main cards on index page
 this style will follow to the characters cards
 */
 
-.type-dendro {
-    background-color: #8EA664;
 
-
-}
-
-.type-geo {
-    background-color: #D4B275;
-
-}
-
-.type-hydro {
-    background-color: #63A3CF;
-
-}
-
-
-
-.type-electro {
-    background-color: #7C61B3;
-}
 
 
 
@@ -446,4 +422,19 @@ form button{
 }
 .input-group span i{
     color: #8EA664;
+}
+
+#pet-card { position: relative; }
+
+.xp-badge {
+  position: absolute;
+  top: 1.4rem;
+  right: .5rem;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 600;
+  background: #feabc5;
+  color: #fff;
+  backdrop-filter: blur(4px);
 }
