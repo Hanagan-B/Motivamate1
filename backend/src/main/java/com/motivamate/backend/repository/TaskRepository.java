@@ -8,5 +8,5 @@ import com.motivamate.backend.model.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    List<Task> findByUser_Id(Long userId);
+    List<Task> findAllByUser_Id(Long userId);
 }
