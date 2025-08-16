@@ -92,6 +92,8 @@
     if (xpEl) xpEl.textContent = `XP: ${xpValue}`;
     const badge = ensureXpBadge();
     if (badge) badge.textContent = `XP: ${xpValue}`;
+
+    if (window.updateEvolutionUI) window.updateEvolutionUI(xpValue);
   }
 
   function renderSummary(tasks) {
@@ -200,12 +202,12 @@
       logout.addEventListener("click", (e) => {
         e.preventDefault();
         localStorage.removeItem("token");
-        localStorage.removeItem("name"); // caso você salve o nome no login
+        localStorage.removeItem("name"); 
         window.location.href = "login.html";
       });
     }
 
-    // primeira carga
+    
     refresh();
     
   }
@@ -287,5 +289,75 @@
 
   if (PET_IMAGES.length && petContainer && !petContainer.querySelector('img')) {
     setPetImage(PET_IMAGES[0]);
+  }
+
+  const EVOLUTION_THRESHOLDS = [200]; 
+  const PET_STAGE_IMAGES = [
+    './src/images/Fox pink-Photoroom.png',                 
+    './src/images/transparent-Photoroom-grown.jpg',         
+    
+  ];
+  const evolveBtn = document.getElementById('evolveBtn');
+  const ACTIVE_USER_ID = localStorage.getItem('userId') || '1';
+  const STAGE_KEY = (uid) => `petStage:${uid}`;
+  function getSavedStage() {
+    const raw = localStorage.getItem(STAGE_KEY(ACTIVE_USER_ID));
+    const n = Number(raw);
+    return Number.isFinite(n) ? Math.max(0, Math.min(n, PET_STAGE_IMAGES.length - 1)) : 0;
+  }
+
+  function setSavedStage(stage) {
+    localStorage.setItem(STAGE_KEY(ACTIVE_USER_ID), String(stage));
+  }
+
+  function xpToStage(xp) {
+    // retorna o maior estágio cujo threshold foi alcançado
+    let stage = 0;
+    for (let i = 0; i < EVOLUTION_THRESHOLDS.length; i++) {
+      if (xp >= EVOLUTION_THRESHOLDS[i]) stage = i + 1;
+    }
+    return Math.min(stage, PET_STAGE_IMAGES.length - 1);
+  }
+  function applyPetStage(stage) {
+    // garanta que a imagem corresponda ao estágio salvo
+    const src = PET_STAGE_IMAGES[stage] || PET_IMAGES[0];
+    setPetImage(src);
+  }
+
+  // Chamada toda vez que o XP for renderizado (ver ponte no IIFE principal)
+  window.updateEvolutionUI = function updateEvolutionUI(currentXp) {
+    const maxStageByXp = xpToStage(currentXp);
+    const savedStage = getSavedStage();
+
+    // troca imagem para o estágio salvo
+    applyPetStage(savedStage);
+
+    // se o usuário já pode subir de estágio (XP alcançou) e ainda não confirmou evolução
+    const canEvolve = maxStageByXp > savedStage;
+    if (evolveBtn) {
+      evolveBtn.hidden = !canEvolve;
+      evolveBtn.disabled = !canEvolve;
+    }
+  };
+
+  // Clique no botão evoluir
+  if (evolveBtn) {
+    evolveBtn.addEventListener('click', () => {
+      const currentXpText = document.querySelector('.xp-badge')?.textContent || '';
+      const currentXp = Number((currentXpText.match(/\d+/) || [0])[0]); // extrai número simples
+      const nextStage = Math.min(getSavedStage() + 1, xpToStage(currentXp));
+
+      setSavedStage(nextStage);
+      applyPetStage(nextStage);
+      evolveBtn.hidden = true; // some após evoluir
+
+      // efeitinho
+      triggerPetState('celebrate', 1000);
+    });
+  }
+
+  // Inicializa imagem base se nada salvo
+  if (!localStorage.getItem(STAGE_KEY(ACTIVE_USER_ID))) {
+    setSavedStage(0);
   }
 })();
