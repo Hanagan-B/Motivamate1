@@ -16,6 +16,8 @@
     : "https://SEU-BACKEND-PUBLICO.exemplo.com"; // <-- troque pela URL do backend hospedado (https)
 
   window.APP_CONFIG = {
-    API_BASE: lsApi || auto
-  };
+  API_BASE: window.location.hostname.includes("localhost")
+    ? "http://localhost:8080"
+    : "https://motivamate-production.up.railway.app"
+};
 })();
