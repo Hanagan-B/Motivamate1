@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MotivaMate — Dashboard</title>
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+
+  <!-- Style -->
+  <link rel="stylesheet" href="./src/css/reset.css" />
+  <link rel="stylesheet" href="./src/css/dashboard.css" />
+  <link rel="stylesheet" href="./src/css/style.css">
+  <link rel="stylesheet" href="./src/css/responsivo.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="top">
+    <ul class="navbar">
+      <li class="litop"><a href="index.html" class="topping">Home</a></li>
+      <li class="litop"><a href="#" id="logoutBtn" class="topping">Logout</a></li>
+      <li class="litop"><a href="./contactUs.html" class="topping">Contact us</a></li>
+
+      </li>
+
+    </ul>
+  </div>
+
+
+
+  <main>
+
+
+    <section class="content">
+      <div class="cards">
+
+        <article class="card" id="task-card">
+          <header class="card-header">
+            <h2>My tasks</h2>
+            <div class="task-form">
+              <input id="taskInput" type="text" placeholder="New task..." />
+              <button id="btnAdd" class="btn primary">Add</button>
+            </div>
+          </header>
+
+          <div class="card-body">
+            <ul id="taskList" class="task-list"></ul>
+            <div id="taskEmpty" class="empty" hidden>
+              No tasks yet. Add your first task!
+            </div>
+            <div id="taskLoading" class="loading" hidden>
+              Loading tasks…
+            </div>
+          </div>
+        </article>
+
+
+        <article class="card" id="pet-card">
+          <header class="card-header">
+            <h2>My Pet</h2>
+          </header>
+          <div class="card-body pet-gallery">
+
+            <div class="pet-images" id="petImages">
+              <img src="./src/images/Fox pink-Photoroom.png" alt="fox pet">
+            </div>
+            <div class="evolve-area">
+              <button id="evolveBtn" class="btn evolve" hidden>Evoluir Pet ✨</button>
+            </div>
+          </div>
+        </article>
+
+
+        <article class="card">
+          <header class="card-header">
+            <h2>Summary</h2>
+          </header>
+          <div class="card-body" id="summary">
+            <div class="stat">
+              <div class="stat-value" id="statTotal">--</div>
+              <div class="stat-label">Total tasks</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statDone">--</div>
+              <div class="stat-label">Finished</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statOpen">--</div>
+              <div class="stat-label">To do</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+
+  <footer>
+
+    <div id="footer_content">
+      <div id="footer_contents">
+        <a href="./index.html"><img src="./src/images/motivamatelogo-Photoroom.png" alt="logo"></a>
+
+      </div>
+
+      <ul class="footer_list">
+        <li>
+          <h3 class="textlist">Oficial MotivaMate</h3>
+        </li>
+        <li>
+          <a href="./dashboard.html" class="footer-link">Sign in</a>
+        </li>
+        <li>
+          <a href="./contactUs.html" class="footer-link">Contact Us</a>
+        </li>
+
+
+      </ul>
+
+      <ul class="footer_list">
+        <li>
+          <h3 class="textlist">About Dev</h3>
+        </li>
+        <li>
+          <a href="https://github.com/Hanagan-B" class="footer-link">GitHub</a>
+        </li>
+
+
+
+      </ul>
+
+      <div id="footer_subscribe">
+        <h3 class="textlist">Subscribe</h3>
+        <p class="textlist">
+          Enter your email to get news about MotivaMate
+        </p>
+
+        <div id="input_group">
+          <input type="email" id="email">
+          <button>
+            <i class="fa-solid fa-envelope"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="footer_copyright">
+      &#169
+      B Hanagan. All Rights Reserved.
+    </div>
+  </footer>
+  </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./src/js/config.js"></script>
+  <script src="./src/js/dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+@media(max-width: 750px) {
+   
+    .navbar{
+        width: 90%;
+       
+    }
+    .litop{
+        
+        display: inline-block;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    li .topping {
+        font-size: 10px;
+        padding: 20px 8px;
+    }
+    .textcenter{
+        margin: auto;
+        width: 100%;
+    }
+    .val-archons{
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0;
+    }
+
+    .card-archons{
+        max-width: 300px;
+    }
+
+    .card-archon .card-informacoes{
+        padding: 60px 30px 30px;
+        margin-top: -50px;
+    }
+
+    .card-archon .card-informacoes h3{
+        font-size: 16px;
+    }
+
+    .listagem{
+        max-width: 360px;
+    }
+
+    .listagem .archon{
+        width: 45%;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-bottom: 0;
+        border-radius: 8px;
+    }
+    .listagem ul{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #footer_content {
+    grid-template-columns: repeat(1, 1fr) ;
+    gap: 2rem;
+    
+    }
+    .footer_list{
+        margin-left: 2rem;
+    }
+    #footer_subscribe {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+}
